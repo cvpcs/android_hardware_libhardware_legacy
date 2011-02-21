@@ -124,6 +124,19 @@ protected:
             NUM_STRATEGIES
         };
 
+#ifdef SHADOW_HARDWARE
+        // motorola shadow a2dp shit
+        enum a2dp_mode {
+            A2DP_NONE,
+            A2DP_SBC,
+            A2DP_DIRECT,
+        };
+        enum a2dp_output {
+            OUTPUT_SBC,
+            OUTPUT_DIRECT,
+        };
+#endif
+
         // descriptor for audio outputs. Used to maintain current configuration of each opened audio output
         // and keep track of the usage of this output by each audio stream type.
         class AudioOutputDescriptor
@@ -238,6 +251,12 @@ protected:
         // true is current platform implements a back microphone
         virtual bool hasBackMicrophone() const { return false; }
 
+#ifdef SHADOW_HARDWARE
+        // stubs for motorola shadow-based hardware (DX/D2/etc)
+        virtual bool canDoA2dpDirect() { return false; }
+        virtual audio_io_handle_t a2dpCheckAndConfigure(audio_io_handle_t output) { return output; }
+#endif
+
 #ifdef WITH_A2DP
         // true is current platform supports suplication of notifications and ringtones over A2DP output
         virtual bool a2dpUsedForSonification() const { return true; }
@@ -287,6 +306,13 @@ protected:
         audio_io_handle_t mHardwareOutput;              // hardware output handler
         audio_io_handle_t mA2dpOutput;                  // A2DP output handler
         audio_io_handle_t mDuplicatedOutput;            // duplicated output handler: outputs to hardware and A2DP.
+
+#ifdef SHADOW_HARDWARE
+        // stuff for shadow
+        audio_io_handle_t mA2dpDirectOutput;
+        a2dp_mode mA2dpMode;
+        a2dp_output mA2dpOutputType;
+#endif
 
         KeyedVector<audio_io_handle_t, AudioOutputDescriptor *> mOutputs;   // list of output descriptors
         KeyedVector<audio_io_handle_t, AudioInputDescriptor *> mInputs;     // list of input descriptors

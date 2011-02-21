@@ -114,6 +114,12 @@ public:
     // releases the input.
     virtual void releaseInput(audio_io_handle_t input) = 0;
 
+#ifdef SHADOW_HARDWARE
+    // stubs for motorola shadow-based hardware (DX/D2/etc)
+    virtual bool canDoA2dpDirect();
+    virtual audio_io_handle_t a2dpCheckAndConfigure(audio_io_handle_t output);
+#endif
+
     //
     // volume control functions
     //
