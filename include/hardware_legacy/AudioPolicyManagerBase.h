@@ -253,8 +253,8 @@ protected:
 
 #ifdef SHADOW_HARDWARE
         // stubs for motorola shadow-based hardware (DX/D2/etc)
-        virtual bool canDoA2dpDirect() { return false; }
-        virtual audio_io_handle_t a2dpCheckAndConfigure(audio_io_handle_t output) { return output; }
+        virtual bool canDoA2dpDirect();
+        virtual audio_io_handle_t a2dpCheckAndConfigure(audio_io_handle_t output);
 #endif
 
 #ifdef WITH_A2DP
